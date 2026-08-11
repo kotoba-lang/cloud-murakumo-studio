@@ -2,7 +2,7 @@ node_modules/
 target/
 .cpcache/
 .shadow-cljs/
-/tauri/dist/js/
-/tauri/dist/vendor/kotoba-ui.css
+/desktop/dist/js/
+/desktop/dist/vendor/kotoba-ui.css
 .nrepl-port
 *.log
