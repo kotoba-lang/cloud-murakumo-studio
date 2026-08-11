@@ -11,7 +11,7 @@
   ;; sibling to orgs/kotoba-lang/inference): `clojure -M:dev:engine`.
   :dev {:override-deps {io.github.kotoba-lang/inference {:local/root "../inference"}}}
 
-  ;; frontend (shadow-cljs :app build → tauri/dist/js). appkit transitively
+  ;; frontend (shadow-cljs :app build → desktop/dist/js). appkit transitively
   ;; pulls kotoba-ui → liquid-glass-ui → shitsuke (ADR-2607022800/0033).
   :cljs
   {:extra-deps {thheller/shadow-cljs {:mvn/version "2.28.20"}

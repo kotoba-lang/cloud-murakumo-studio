@@ -48,18 +48,23 @@ superproject (this repo is registered there via
 - **Fleet participation is announce-only.** Joining as a `murakumo.infer`
   compute worker (did:key/CACAO identity, actual shard-plan participation) is
   Phase 3, not implemented here.
-- **Packaging is dev-only.** `tauri dev` shells out to a `clojure` binary on
-  `PATH` and assumes the JVM sidecar's source tree sits next to the app
-  (`MURAKUMO_STUDIO_REPO` env var to override). Bundling a JVM into a
-  distributable `.app`/`.dmg` is not attempted yet.
+- **Packaging is dev-only.** The app runs the JVM sidecar from a `clojure`
+  binary on `PATH` and finds its source tree by walking up for `deps.edn`
+  (`MURAKUMO_STUDIO_REPO` to override). Bundling a JVM into a distributable
+  `.app`/`.dmg` is not attempted yet.
+- **No Rust.** The Tauri crate was removed 2026-08-11. It registered no Tauri
+  commands and its own header said "No business logic lives in Rust"; it opened
+  a window and supervised the sidecar, both of which `kotoba-lang/shell` owns.
+  What is left is `app.kotoba.edn`. `murakumo-studio.tauri` went with it —
+  nothing required it, because the UI's whole data path is HTTP to 127.0.0.1.
 
 ## Architecture
 
 ```
-Tauri 2 (Rust shell, tauri/)
+kotoba-lang/shell (native window host + sidecar supervision, app.kotoba.edn)
  └─ webview: ClojureScript (shadow-cljs + reagent), kotoba-ui.core + appkit.core
       talks HTTP/JSON to ↓
-JVM engine sidecar (src/murakumo_studio/engine.clj, spawned by the Rust shell)
+JVM engine sidecar (src/murakumo_studio/engine.clj, declared in app.kotoba.edn)
  ├─ murakumo_studio.models  — local GGUF scan (~/.murakumo-studio/models,
  │                             ~/.ollama/models) + HF Hub download
  ├─ murakumo_studio.fleet   — announce-only client for
@@ -72,25 +77,27 @@ JVM engine sidecar (src/murakumo_studio/engine.clj, spawned by the Rust shell)
 
 - [Clojure CLI](https://clojure.org/guides/install_clojure) (`clojure`/`clj` on `PATH`)
 - [babashka](https://babashka.org/) (`bb`) for CSS generation / test tasks
-- Node.js + npm, for shadow-cljs and the Tauri CLI
-- Rust toolchain (for `tauri dev` / `tauri build`)
+- Node.js + npm, for shadow-cljs
+- [`kotoba-lang/shell`](https://github.com/kotoba-lang/shell) for the desktop
+  host (`bin/kotoba-shell app run`). No Rust toolchain.
 
 If checked out inside the `com-junkawasaki` west superproject (sibling to
 `orgs/kotoba-lang/inference`, `orgs/kotoba-lang/appkit`, etc.), use the `:dev`
 alias to pick up `:local/root` sibling deps instead of the published git pins:
 `clojure -M:dev:engine`, and set `MURAKUMO_STUDIO_ENGINE_ALIAS=:dev:engine`
-before `tauri dev` (see `tauri/src-tauri/src/main.rs`).
+before launching (the overrides a host may apply are declared in
+`app.kotoba.edn` under `:sidecar/env-overrides`).
 
 ## Dev loop
 
 ```bash
 npm install
-bb ui-css                 # generate tauri/dist/vendor/kotoba-ui.css
-npm run gui:watch &        # shadow-cljs watch → tauri/dist/js/main.js
-cd tauri && npm install && npm run tauri dev
+bb ui-css                 # generate desktop/dist/vendor/kotoba-ui.css
+npm run gui:watch &        # shadow-cljs watch → desktop/dist/js/main.js
+kotoba-shell app run --target macos --manifest app.kotoba.edn --execute
 ```
 
-The Rust shell spawns the JVM engine sidecar on startup
+The host spawns the JVM engine sidecar on startup
 (`clojure -M:engine`, `http://127.0.0.1:8721` by default — override with
 `MURAKUMO_STUDIO_PORT`). You can also run the sidecar standalone for
 frontend-only iteration:

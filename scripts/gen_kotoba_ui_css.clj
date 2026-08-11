@@ -1,4 +1,4 @@
-;; kotoba-ui (liquid-glass) の静的 CSS を tauri/dist/vendor/ へ生成する（`bb ui-css`）。
+;; kotoba-ui (liquid-glass) の静的 CSS を desktop/dist/vendor/ へ生成する（`bb ui-css`）。
 ;; liquid-glass-ui の Tier A/B CSS は css.core の EDN rule data から純関数で
 ;; 生成される（ビルドステップ不要・babashka-safe）。murakumo-studio は常時ダーク
 ;; テーマなので、Tier A は prefers-color-scheme に依存せず dark トークンで
@@ -35,7 +35,7 @@ input,textarea,select{color:inherit}
        "\n"
        app-css))
 
-(let [out "tauri/dist/vendor/kotoba-ui.css"]
+(let [out "desktop/dist/vendor/kotoba-ui.css"]
   (io/make-parents out)
   (spit out css)
   (println "✓" out (str "(" (count css) " bytes)")))

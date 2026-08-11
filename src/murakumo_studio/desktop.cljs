@@ -1,6 +1,6 @@
 (ns murakumo-studio.desktop
-  "Entry point for the shadow-cljs :app build (tauri/dist/js/main.js, loaded
-  by tauri/dist/index.html). Polls the local engine sidecar until it's ready
+  "Entry point for the shadow-cljs :app build (desktop/dist/js/main.js, loaded
+  by desktop/dist/index.html). Polls the local engine sidecar until it's ready
   (the Rust shell spawns it on startup; JVM boot + inference lib load takes a
   few seconds), then loads the model list."
   (:require [reagent.dom.client :as rdomc]
