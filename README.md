@@ -76,7 +76,8 @@ JVM engine sidecar (src/murakumo_studio/engine.clj, declared in app.kotoba.edn)
 ## Prerequisites
 
 - [Clojure CLI](https://clojure.org/guides/install_clojure) (`clojure`/`clj` on `PATH`)
-- [babashka](https://babashka.org/) (`bb`) for CSS generation / test tasks
+- [nbb](https://github.com/babashka/nbb) for the task registry (`scripts/tasks.edn`).
+  babashka is **not** required — it was retired repo-wide by ADR-2607173000.
 - Node.js + npm, for shadow-cljs
 - [`kotoba-lang/shell`](https://github.com/kotoba-lang/shell) for the desktop
   host (`bin/kotoba-shell app run`). No Rust toolchain.
@@ -92,10 +93,16 @@ before launching (the overrides a host may apply are declared in
 
 ```bash
 npm install
-bb ui-css                 # generate desktop/dist/vendor/kotoba-ui.css
 npm run gui:watch &        # shadow-cljs watch → desktop/dist/js/main.js
 kotoba-shell app run --target macos --manifest app.kotoba.edn --execute
 ```
+
+`ui-css` — which generated `desktop/dist/vendor/kotoba-ui.css` — is
+**unavailable**. It was a babashka-hosted `(load-file "scripts/gen_kotoba_ui_css.clj")`
+body, so the bb→nbb conversion could not express it and dropped it
+(ADR-2608131600); the recovered form is in `scripts/tasks-complex.edn`. Restoring
+it is a port, not a conversion. The one task that IS registered is
+`nbb scripts/run-task.cljs test` (6 tests / 14 assertions, measured 2026-08-13).
 
 The host spawns the JVM engine sidecar on startup
 (`clojure -M:engine`, `http://127.0.0.1:8721` by default — override with
