@@ -20,20 +20,42 @@ superproject (this repo is registered there via
   a stable JVM entry point that loads the real GGUF, runs the full 42-layer
   CPU forward pass with a verified-correct KV-cache (identical output
   with/without — pure optimization, ~2.76× speedup measured upstream), and
-  returns real generated text. Verified live: prompt "The capital of France
-  is" → `"يبهيبهيبهيبه"` — a real (not mocked, not an error) but **not
-  coherent** response; a deep-layer numerical drift versus reference
-  implementations (llama.cpp/HF/Ollama) is still open upstream. Every
-  response carries a `murakumo_studio/quality_note` field (and the Chat tab
-  shows a ⚠ banner) saying so explicitly — this isn't hidden from users.
+  returns real generated text.
+
+  **The incoherent-output note that stood here was measured on 2026-07-03 and
+  is out of date.** It reported prompt "The capital of France is" →
+  `"يبهيبهيبهيبه"` and an open deep-layer numerical drift. Upstream
+  `kotoba-lang/inference` then landed the real Gemma4 PLE architecture, QK/V
+  norms, NEOX RoPE, KV-sharing and the KV-cache through 2026-07-13.
+
+  Re-measured 2026-08-13 against the same real `gemma4:e4b` GGUF, on a prompt
+  outside inference's fixed probe:
+
+  | | |
+  |---|---|
+  | prompt | `The largest planet in our solar system is` |
+  | Ollama 0.31.1, greedy | `Jupiter` |
+  | `kotodama.inference`, 42 real blocks, greedy | `" Jupiter. Jupiter is a gas"` |
+
+  Coherent, factually right, and the first token matches Ollama exactly. This
+  is one prompt at six tokens — evidence that the drift is gone, not a proof
+  of logit-level parity across prompts, which inference's own maturity ledger
+  still lists as incomplete.
+
+  The `murakumo_studio/quality_note` field and the ⚠ banner should be revisited
+  against this; they currently warn about a defect that has been fixed.
   If `kotodama.inference.host.jvm/generate` isn't resolvable at all (e.g. an
   older pinned `inference` build), chat requests get a clear `503`/`500`
   instead of crashing the sidecar; every other feature (model manager,
   download, fleet announce) works independently of that.
-- **CPU generation is slow: tens of seconds per token**, dominated by
-  re-reading and dequantizing GGUF weights from disk per session (no weight
-  caching or session reuse across chat turns yet — each `/v1/chat/completions`
-  call currently opens and closes its own session). `Settings → max tokens`
+- **Generation is slow.** Measured 2026-08-13 with the Metal K-dot path, the
+  six tokens above took 6.9–15.5 s each. That is NOT a clean benchmark: this
+  workstation's load average moved between roughly 8 and 176 during the run,
+  from unrelated processes. Treat it as "still seconds per token", not as a
+  figure to compare against. The structural cost is unchanged — GGUF weights
+  are re-read and dequantized per session (no weight caching or session reuse
+  across chat turns; each `/v1/chat/completions` call opens and closes its
+  own session). `Settings → max tokens`
   defaults to 32, not the more conventional 256, to keep replies from taking
   many minutes. GPU/WebGPU (ADR-2607032700 Phase 2) is the real fix.
 - **Model management (local scan, HF Hub search/browse/resumable download),
