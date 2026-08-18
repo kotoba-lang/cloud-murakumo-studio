@@ -5,7 +5,7 @@
   a compute worker for murakumo.infer's distributed shard plans. That's
   Phase 3 (real fleet identity via did:key/CACAO, per CLAUDE.md's
   kotoba-server self-mint section)."
-  (:require [cheshire.core :as json]
+  (:require [json.compat :as json]
             [murakumo-studio.models :as models])
   (:import [java.net URI]
            [java.net.http HttpClient HttpRequest HttpRequest$BodyPublishers HttpResponse$BodyHandlers]

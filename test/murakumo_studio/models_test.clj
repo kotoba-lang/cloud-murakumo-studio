@@ -1,7 +1,7 @@
 (ns murakumo-studio.models-test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure.java.io :as io]
-            [cheshire.core :as json]
+            [json.compat :as json]
             [murakumo-studio.models :as models]))
 
 (defn- temp-dir! []
