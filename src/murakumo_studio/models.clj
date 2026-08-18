@@ -5,7 +5,7 @@
   to re-download models they already have (ADR-2607032700 §4)."
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [cheshire.core :as json])
+            [json.compat :as json])
   (:import [java.io File]
            [java.net URI]
            [java.net.http HttpClient HttpClient$Redirect HttpRequest HttpResponse HttpResponse$BodyHandlers]
