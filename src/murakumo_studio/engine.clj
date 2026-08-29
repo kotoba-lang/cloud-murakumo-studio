@@ -20,7 +20,7 @@
   implementations is still open. Every chat response returned by this engine
   right now is real model output, not a mock, but expect garbled text, not
   fluent language. See the model note this ns attaches to every response."
-  (:require [org.httpkit.server :as http]
+  (:require [kotoba.lang.http.host.httpkit :as http]
             [json.compat :as json]
             [clojure.string :as str]
             [murakumo-studio.models :as models]
