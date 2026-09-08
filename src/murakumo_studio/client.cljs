@@ -4,7 +4,7 @@
   shell (tauri/src-tauri/src/main.rs). The frontend never talks to
   kotoba-lang/inference directly — it only ever speaks HTTP/JSON to this
   localhost process, which is the only thing running on the JVM."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (def default-port 8721)
 

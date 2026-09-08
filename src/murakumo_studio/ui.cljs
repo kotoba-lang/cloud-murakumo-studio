@@ -24,7 +24,7 @@
       React warnings (\"Each child in a list should have a unique key prop\",
       \"Use the defaultValue or value props on <select> instead of setting
       selected on <option>\") on every render, not just a one-off."
-  (:require [appkit.core :as shape]
+  (:require [kotoba.lang.text] [appkit.core :as shape]
             [kotoba-ui.core :as ui]
             [murakumo-studio.state :as state]
             [murakumo-studio.client :as client]))
@@ -147,7 +147,7 @@
 
 (defn- send-message! []
   (let [{:keys [model input messages]} (:chat @state/state)]
-    (when (and model (seq (clojure.string/trim input)))
+    (when (and model (seq (kotoba.lang.text/trim input)))
       (let [user-msg {:role "user" :content input}
             history (conj messages user-msg)
             ;; empty assistant placeholder, filled in progressively as real
@@ -207,7 +207,7 @@
 
 (defn- search-hf! []
   (let [query (get-in @state/state [:download :query])]
-    (when (seq (clojure.string/trim query))
+    (when (seq (kotoba.lang.text/trim query))
       (swap! state/state update :download merge {:searching? true :error nil})
       (-> (client/search-hf query)
           (.then (fn [res]
