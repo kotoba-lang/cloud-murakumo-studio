@@ -22,7 +22,7 @@
   fluent language. See the model note this ns attaches to every response."
   (:require [kotoba.lang.http.host.httpkit :as http]
             [json.compat :as json]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [murakumo-studio.models :as models]
             [murakumo-studio.fleet :as fleet])
   (:gen-class))

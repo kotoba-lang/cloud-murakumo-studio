@@ -4,7 +4,7 @@
   and, read-only, an existing Ollama install's blob store so users don't have
   to re-download models they already have (ADR-2607032700 §4)."
   (:require [clojure.java.io :as io]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [json.compat :as json])
   (:import [java.io File]
            [java.net URI]
