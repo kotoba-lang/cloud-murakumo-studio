@@ -6,3 +6,6 @@ target/
 /desktop/dist/vendor/kotoba-ui.css
 .nrepl-port
 *.log
+
+# nbb dependency cache -- a build artifact, not source
+.nbb/
