@@ -62,9 +62,9 @@ superproject (this repo is registered there via
   streaming chat (SSE, `/v1/chat/completions` with `stream: true` — real
   token-by-token via `:kotodama/on-token`, not simulated), local
   OpenAI-compatible server, and fleet announce are real and tested**
-  (see `test/murakumo_studio/models_test.clj`, live browser session testing
-  of `src/murakumo_studio/ui.cljs` against the real running engine, and manual
-  end-to-end verification of `src/murakumo_studio/engine.clj` via `curl`,
+  (see `test/murakumo_studio/models_test.cljk`, live browser session testing
+  of `src/murakumo_studio/ui.cljk` against the real running engine, and manual
+  end-to-end verification of `src/murakumo_studio/engine.cljk` via `curl`,
   including a real ~6.5min/4-token generation run against the actual
   `gemma4:e4b` GGUF).
 - **Fleet participation is announce-only.** Joining as a `murakumo.infer`
@@ -86,7 +86,7 @@ superproject (this repo is registered there via
 kotoba-lang/shell (native window host + sidecar supervision, app.kotoba.edn)
  └─ webview: ClojureScript (shadow-cljs + reagent), kotoba-ui.core + appkit.core
       talks HTTP/JSON to ↓
-JVM engine sidecar (src/murakumo_studio/engine.clj, declared in app.kotoba.edn)
+JVM engine sidecar (src/murakumo_studio/engine.cljk, declared in app.kotoba.edn)
  ├─ murakumo_studio.models  — local GGUF scan (~/.murakumo-studio/models,
  │                             ~/.ollama/models) + HF Hub download
  ├─ murakumo_studio.fleet   — announce-only client for
@@ -120,11 +120,11 @@ kotoba-shell app run --target macos --manifest app.kotoba.edn --execute
 ```
 
 `ui-css` — which generated `desktop/dist/vendor/kotoba-ui.css` — is
-**unavailable**. It was a babashka-hosted `(load-file "scripts/gen_kotoba_ui_css.clj")`
+**unavailable**. It was a babashka-hosted `(load-file "scripts/gen_kotoba_ui_css.cljk")`
 body, so the bb→nbb conversion could not express it and dropped it
 (ADR-2608131600); the recovered form is in `scripts/tasks-complex.edn`. Restoring
 it is a port, not a conversion. The one task that IS registered is
-`nbb scripts/run-task.cljs test` (6 tests / 14 assertions, measured 2026-08-13).
+`nbb scripts/run-task.cljk test` (6 tests / 14 assertions, measured 2026-08-13).
 
 The host spawns the JVM engine sidecar on startup
 (`clojure -M:engine`, `http://127.0.0.1:8721` by default — override with

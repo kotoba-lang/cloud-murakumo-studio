@@ -1,6 +1,6 @@
 (ns murakumo-studio.client
   "HTTP client for the local murakumo-studio-engine sidecar
-  (src/murakumo_studio/engine.clj), spawned and supervised by the Tauri Rust
+  (src/murakumo_studio/engine.cljk), spawned and supervised by the Tauri Rust
   shell (tauri/src-tauri/src/main.rs). The frontend never talks to
   kotoba-lang/inference directly — it only ever speaks HTTP/JSON to this
   localhost process, which is the only thing running on the JVM."
