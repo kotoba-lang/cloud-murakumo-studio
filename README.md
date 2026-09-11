@@ -107,7 +107,7 @@ JVM engine sidecar (src/murakumo_studio/engine.cljk, declared in app.kotoba.edn)
 If checked out inside the `com-junkawasaki` west superproject (sibling to
 `orgs/kotoba-lang/inference`, `orgs/kotoba-lang/appkit`, etc.), use the `:dev`
 alias to pick up `:local/root` sibling deps instead of the published git pins:
-`clojure -M:dev:engine`, and set `MURAKUMO_STUDIO_ENGINE_ALIAS=:dev:engine`
+`kbb -M:dev:engine`, and set `MURAKUMO_STUDIO_ENGINE_ALIAS=:dev:engine`
 before launching (the overrides a host may apply are declared in
 `app.kotoba.edn` under `:sidecar/env-overrides`).
 
@@ -115,7 +115,7 @@ before launching (the overrides a host may apply are declared in
 
 ```bash
 npm install
-npm run gui:watch &        # shadow-cljs watch → desktop/dist/js/main.js
+npm run gui:watch &        # amu compile --target wasm32-browser → desktop/dist/js/main.js
 kotoba-shell app run --target macos --manifest app.kotoba.edn --execute
 ```
 
@@ -124,22 +124,22 @@ kotoba-shell app run --target macos --manifest app.kotoba.edn --execute
 body, so the bb→nbb conversion could not express it and dropped it
 (ADR-2608131600); the recovered form is in `scripts/tasks-complex.edn`. Restoring
 it is a port, not a conversion. The one task that IS registered is
-`nbb scripts/run-task.cljk test` (6 tests / 14 assertions, measured 2026-08-13).
+`kbb --backend sci scripts/run-task.cljk test` (6 tests / 14 assertions, measured 2026-08-13).
 
 The host spawns the JVM engine sidecar on startup
-(`clojure -M:engine`, `http://127.0.0.1:8721` by default — override with
+(`kbb -M:engine`, `http://127.0.0.1:8721` by default — override with
 `MURAKUMO_STUDIO_PORT`). You can also run the sidecar standalone for
 frontend-only iteration:
 
 ```bash
-clojure -M:engine    # or -M:dev:engine inside the west superproject
+kbb -M:engine    # or -M:dev:engine inside the west superproject
 curl localhost:8721/health
 ```
 
 ## Tests
 
 ```bash
-clojure -M:test     # murakumo_studio.models (local + Ollama manifest scan)
+kbb -M:test     # murakumo_studio.models (local + Ollama manifest scan)
 ```
 
 ## License
