@@ -35,7 +35,7 @@
  ;; taught to walk upward for deps.edn. Unlike the crate, a failed search is an
  ;; error here, not a fallback to $HOME — starting the engine in the wrong
  ;; directory and reporting success is worse than not starting it.
- :sidecar/command ["clojure" "-M:engine"]
+ :sidecar/command ["kbb" "-M:engine"]
  :sidecar/find-root-marker "deps.edn"
 
  ;; The two things a host may vary, named by the app rather than discovered by
