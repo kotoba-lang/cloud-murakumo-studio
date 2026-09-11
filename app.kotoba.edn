@@ -11,7 +11,7 @@
 ;;
 ;; `murakumo-studio.tauri` (the IPC helper) went with it: nothing required it,
 ;; because the UI's whole data path is HTTP to 127.0.0.1 — see
-;; src/murakumo_studio/client.cljs.
+;; src/murakumo_studio/client.cljk.
 
 {:app/id "net.kotoba-lang.murakumo-studio"
  :app/name "murakumo-studio"
