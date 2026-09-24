@@ -1,5 +1,5 @@
 (ns murakumo-studio.models-test
-  (:require [clojure.test :refer [deftest testing is]]
+  (:require [kotoba.test :refer [deftest testing is]]
             [clojure.java.io :as io]
             [json.compat :as json]
             [murakumo-studio.models :as models]))
