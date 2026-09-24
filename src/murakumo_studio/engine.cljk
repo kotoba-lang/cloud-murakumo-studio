@@ -20,7 +20,7 @@
   implementations is still open. Every chat response returned by this engine
   right now is real model output, not a mock, but expect garbled text, not
   fluent language. See the model note this ns attaches to every response."
-  (:require [kotoba.lang.http.host.httpkit :as http]
+  (:require [kotoba.http.form-urlencoded :as form-urlencoded] [kotoba.lang.http.host.httpkit :as http]
             [json.compat :as json]
             [kotoba.lang.text :as str]
             [murakumo-studio.models :as models]
@@ -44,7 +44,7 @@
     (into {}
           (map (fn [kv]
                  (let [[k v] (str/split kv #"=" 2)]
-                   [(keyword k) (some-> v (java.net.URLDecoder/decode "UTF-8"))])))
+                   [(keyword k) (some-> v (form-urlencoded/form-decode))])))
           (str/split query-string #"&"))))
 
 (defn- generate-fn

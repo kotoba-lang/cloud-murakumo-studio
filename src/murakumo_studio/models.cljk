@@ -3,7 +3,7 @@
   ~/.murakumo-studio/models/*.gguf (models murakumo-studio itself downloaded)
   and, read-only, an existing Ollama install's blob store so users don't have
   to re-download models they already have (ADR-2607032700 §4)."
-  (:require [clojure.java.io :as io]
+  (:require [kotoba.http.form-urlencoded :as form-urlencoded] [clojure.java.io :as io]
             [kotoba.lang.text :as str]
             [json.compat :as json])
   (:import [java.io File]
@@ -113,7 +113,7 @@
   [query]
   (when (str/blank? query)
     (throw (ex-info "query is required" {:query query})))
-  (let [encoded (java.net.URLEncoder/encode query "UTF-8")
+  (let [encoded (form-urlencoded/form-encode query)
         results (hf-get-json (str "/api/models?search=" encoded "&limit=25"))]
     (mapv (fn [m] {:id (:id m) :downloads (:downloads m) :likes (:likes m)}) results)))
 
