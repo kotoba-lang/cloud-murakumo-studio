@@ -3,7 +3,7 @@
 ;; 生成される（ビルドステップ不要・babashka-safe）。murakumo-studio は常時ダーク
 ;; テーマなので、Tier A は prefers-color-scheme に依存せず dark トークンで
 ;; :root を直接発行する（gftdcojp/manimani/scripts/gen_kotoba_ui_css.cljk と同型）。
-(require '[clojure.java.io :as io]
+(require '[kotoba.io :as io]
          '[liquid-glass.tokens :as t]
          '[liquid-glass.style :as s])
 
