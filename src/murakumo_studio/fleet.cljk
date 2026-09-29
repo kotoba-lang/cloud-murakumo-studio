@@ -3,7 +3,7 @@
   (api.murakumo.cloud). ADR-2607032700 §5: v1 only announces this node's
   locally available models (`PUT /infer/models/<id>`) — it does not join as
   a compute worker for murakumo.infer's distributed shard plans. That's
-  Phase 3 (real fleet identity via did:key/CACAO, per CLAUDE.md's
+  Phase 3 (real fleet identity via did:key/CACAO, per AGENTS.md's
   kotoba-server self-mint section)."
   (:require [json.compat :as json]
             [murakumo-studio.models :as models])
